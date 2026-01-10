@@ -1,2 +1,4 @@
 # r-programming-assignments
-Public repository for my R programming class assignments
+Spencer Treadway
+LIS 4370 R Programming for Data Science
+Repository for my R programming assignments
