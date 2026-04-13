@@ -1,0 +1,66 @@
+---
+title: "assignment12"
+author: "Spencer Treadway"
+date: "2026-04-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## What is R Markdown?
+
+ R Markdown is a file format (extension .Rmd) that combines plain Markdown text with executable R code chunks inside a single document. When you knit the document — using the knitr package — R executes every code chunk in sequence, captures the outputs (tables, plots, printed results), and weaves them together with your prose into a polished HTML, PDF, or Word report.
+
+This means your analysis and your writing live together: no more copying numbers from the console into a Word file, no more "which version of the chart did I use?" R Markdown enforces reproducibility by design — anyone with your .Rmd file and the same R environment can regenerate the exact same report. 
+
+## Context and Motivation
+
+Data analysis rarely lives in a vacuum. A table of regression coefficients means little without the story around it, the research question, the data provenance, the caveats and assumptions. Traditional workflows force a hard split between the "doing" (code) and the "telling" (document), which creates friction and introduces errors every time results are copied by hand. R Markdown dissolves that boundary. A single source file contains the question, the method, and the answer all at once, rendered afresh each time you knit. This philosophy, sometimes called literate programming, after Donald Knuth's original vision, treats code and prose as equal citizens of the same document, making the analysis self-documenting by construction.
+
+## Mathematical Expressions
+
+Use single dollar signs for inline math. For example, the relationship between two parameters can be written as
+
+$\alpha + \beta = \gamma$
+
+Use double dollar signs $$...$$ for a centered block equation. The simple linear regression model:
+
+$$\hat{Y}_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad \varepsilon_i \sim \mathcal{N}(0, \sigma^2)$$
+
+## Executable R Code
+
+```{r load-data}
+# Load dplyr and mtcars dataset
+library(dplyr)
+data("mtcars")
+
+# Quick summary
+mtcars %>%
+  select(mpg, hp, wt, cyl) %>%
+  summary()
+```
+
+You can also embed plots, for example:
+
+```{r ggplot-chart, echo=FALSE}
+library(ggplot2)
+
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
+  geom_point(size = 3, alpha = 0.8) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 0.7) +
+  scale_color_brewer(palette = "Set1", name = "Cylinders") +
+  labs(
+    title = "Car weight vs fuel efficiency",
+    x = "Weight (1000 lbs)",
+    y = "Miles per gallon"
+  ) +
+  theme_minimal() 
+```
+
+## R Markdown vs. Plain Reports
+
+ Writing this document in R Markdown felt meaningfully different from producing a traditional report. In a conventional workflow, analysis happens in one place and writing happens in another — you run your R script, screenshot the plot, paste numbers into Word, and pray nothing changes. With R Markdown, the feedback loop collapses: edit the data-cleaning step in chunk 1, hit Knit, and every downstream result — the summary table, the chart, any inline numbers — updates automatically.
+
+The friction that remains is mostly upfront: you need to think about chunk options (echo, warning, fig.width), learn how LaTeX math integrates, and manage dependencies carefully so the document knits cleanly in a fresh session. But these costs are paid once. The gain — a document that is its own audit trail — compounds over time. Colleagues can reproduce your findings, you can update the report when new data arrives with a single command, and there is no ambiguity about which analysis produced which result. For any work that lives longer than a day, R Markdown is the clearer choice. 
